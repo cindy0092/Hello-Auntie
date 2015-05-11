@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html ng-app="helloAuntie">
+	<head>
+		<script src="lib/angular.min.js"></script>
+		<script type="text/javascript" src="lib/jquery.js"></script>
+		<script type="text/javascript" src="src/app.js"></script>
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" text="text/css" href="bs3.3.4/bootstrap.min.css">
+		<link rel="stylesheet" text="text/css" href="src/layout.css">
+		<!-- Optional theme <link rel="stylesheet" href="bs3.3.4/bootstrap-theme.min.css">-->
+
+	</head>
+	<body ng-controller="StoreController as store">
+		<header>
+			<h1 class="text-left">Hello Auntie</h1>
+		</header>
+		<div class="list-group">
+	    	<div class="list-group-item" ng-repeat="product in store.products">
+		      	<h3>{{product.name}}
+		      	<!--<input placeholder="Enter Qty here..."  onfocus="this.type='number';" min="0" ng-model="product.quantity"></input>-->
+		      	<select ng-model="product.quantity" ng-options="stars for stars in [0,1,2,3,4,5,6,7,8,9,10]" title="Quantity">
+		      		<option value>Qty</option>
+		      	</select>
+		      		<em class="pull-right">
+		      		Unit Price: {{product.price | currency}}
+		      			<em class="pull-bottom"><p><font size="2">SubTotal cost: {{product.total = product.quantity * product.price | currency}}</font></p></em>
+		      		</em>
+		      		<!--<p>Total: {{product.overAllTotal}}</p>-->
+		      	</h3>
+		      	<!--Image <product-gallery></product-gallery>-->	      	
+		      	<div class="gallery"> 
+		      		<img ng-src="{{product.images}}" />
+		      	</div>
+		      	<!--<product-tabs></product-tabs>-->
+	    	<section class="tab" ng-controller="TabController as tab">
+        		<ul class="nav nav-pills">
+          			<li ng-class="{ active: tab.isSet(1) }">
+            			<a href ng-click="tab.setTab(1)">Description</a></li>
+          			<li ng-class="{ active: tab.isSet(2) }">
+            			<a href ng-click="tab.setTab(2)">Name</a></li>
+          			<li ng-class="{ active: tab.isSet(3) }">
+            			<a href ng-click="tab.setTab(3)">Reviews</a></li>
+        		</ul>
+        		<div ng-show="tab.isSet(1)">
+        			<h4>Description</h4>
+        			<blockquote>{{product.description}}</blockquote>
+        		</div>
+        		<div ng-show="tab.isSet(2)">
+        			<h4>name</h4>
+        			<blockquote>{{product.name}}</blockquote>
+        		</div>
+        		<div ng-show="tab.isSet(3)">
+        			<h4>Review</h4>
+        			<!--  Product Reviews List -->
+        			<ul>
+        				<h4>Cusomter's Review</h4>
+        				<li ng-repeat="review in product.reviews">
+        					<blockquote>
+        						<strong>{{review.stars}} Stars</strong>
+        						{{review.body}}
+        						<cite class="clearfix">-{{review.author}}{{review.createdOn | date}}</cite>
+        					</blockquote>
+        				</li>
+        			</ul>
+            <!--  Review Form -->
+            		<form name="reviewForm" ng-controller="ReviewController as reviewCtrl" ng-submit="reviewCtrl.addReview(product)">
+              <!--  Live Preview -->
+              			<blockquote >
+                			<strong>{{reviewCtrl.review.stars}} Stars</strong>
+                			{{reviewCtrl.review.body}}
+                			<cite class="clearfix">-{{reviewCtrl.review.author}}</cite>
+              			</blockquote>
+              	<!--  Review Form -->
+              			<h4>Submit a Review</h4>
+              			<fieldset class="form-group">
+              				<select ng-model="reviewCtrl.review.stars" class="form-control" ng-options="stars for stars in [5,4,3,2,1]" title="Stars">
+              					<option value>Rate the Product</option>
+              				</select>
+              			</fieldset>
+              			<fieldset class="form-group">
+              				<textarea ng-model="reviewCtrl.review.body" class="form-control" placeholder="Write a review..." title="Review"></textarea>
+              			</fieldset>
+              			<fieldset class="form-group">
+              				<input ng-model="reviewCtrl.review.author" type="email" class="form-control" placeholder="xxx@yyy.com" title="Email" />
+              			</fieldset>
+              			<fieldset class="form-group">
+              				<input type="submit" class="btn btn-primary pull right" value="Submit Review" />
+              			</fieldset>
+              		</form>
+        		</div>
+      		</section>
+      		</div>
+	    </div>	
+			<!--<footer class="pull-bottom-	right" ng-controller="StoreController as store">
+					<div><font size="3">Total: </font></div>
+		        	<div class="cart-totals-value">{{store.totals}}</div>-->
+		<footer class="container">
+		    <button class="pull-right" id="calculateButton">Check Out</button>
+		</footer>
+	</body>
+</html>
