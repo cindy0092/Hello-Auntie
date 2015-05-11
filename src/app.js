@@ -60,7 +60,6 @@
 
 	var updateTotals = function(){
        	totals = 0;
-       	console.log(fashion)
        	for (var i=0;i<fashion.length;i++){
         	totals += fashion[i].quantity * fashion[i].price;
        	}
